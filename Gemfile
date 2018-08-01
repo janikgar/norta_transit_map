@@ -38,6 +38,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'better_errors'
   gem 'binding_of_caller'
   gem 'rspec-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -67,3 +68,4 @@ gem 'figaro'
 gem 'httparty'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'gtfs', git: 'https://github.com/transitland/gtfs.git'

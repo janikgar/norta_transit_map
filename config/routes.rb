@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'platform#view'
+  get 'route' => 'platform#route'
   get 'sessions/create'
   get 'sessions/destroy'
   get 'auth/:provider/callback' => 'sessions#create'

@@ -25,6 +25,13 @@
                 newCoordPath.push(newInnerPath);
             <% end %>
             var polyLine = L.polyline(newCoordPath, {color: '#'+pathColor}).addTo(map);
+            polyLine.bindPopup("<div style=\"padding: 5px; background-color: #<%=j route.tags['route_color']%> \
+                ; color: #<%= j route.tags['route_text_color']%> \
+                \"><strong>Route: \
+                <%= j route.name %> \
+                </strong><br /><p> \
+                <%= j link_to "Info and Schedule", route_path(route: route),  style: "color: ##{route.tags['route_text_color']}"%> \
+                </div>");
             map.fitBounds(polyLine.getBounds());
         <% end %>
 
