@@ -1,0 +1,2 @@
+class ShapeTrip < ApplicationRecord
+end

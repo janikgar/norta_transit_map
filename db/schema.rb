@@ -10,15 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_153217) do
+ActiveRecord::Schema.define(version: 2018_08_01_235417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "calendars", force: :cascade do |t|
-    t.date "start_date"
-    t.date "end_date"
-    t.integer "service_id"
+  create_table "agencies", primary_key: "agency_id", id: :serial, force: :cascade do |t|
+    t.string "agency_name"
+    t.string "agency_url"
+    t.string "agency_timezone"
+    t.string "agency_lang"
+    t.string "agency_phone"
+    t.string "agency_fare_url"
+    t.string "agency_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "calendars", primary_key: "service_id", id: :serial, force: :cascade do |t|
     t.boolean "sunday"
     t.boolean "monday"
     t.boolean "tuesday"
@@ -26,88 +35,64 @@ ActiveRecord::Schema.define(version: 2018_08_01_153217) do
     t.boolean "thursday"
     t.boolean "friday"
     t.boolean "saturday"
+    t.date "start_date"
+    t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "routes", force: :cascade do |t|
-    t.string "onestop_id"
-    t.string "name"
-    t.string "vehicle_type"
-    t.string "color"
-    t.text "geometry"
-    t.string "wheelchair_accessible"
-    t.string "bikes_allowed"
+  create_table "routes", primary_key: "route_id", id: :serial, force: :cascade do |t|
+    t.string "route_short_name"
+    t.string "route_long_name"
+    t.text "route_desc"
+    t.integer "route_type"
+    t.string "route_url"
+    t.string "route_color"
+    t.string "route_text_color"
+    t.integer "route_sort_order"
+    t.bigint "agency_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "created_or_updated_in_changeset_id"
-    t.text "stops_served_by_route"
-    t.string "operated_by_onestop_id"
-    t.string "operated_by_name"
-    t.text "route_stop_patterns_by_onestop_id"
-    t.text "tags"
+    t.index ["agency_id"], name: "index_routes_on_agency_id"
   end
 
-  create_table "schedule_stops", force: :cascade do |t|
-    t.string "feed_onestop_id"
-    t.string "route_onestop_id"
-    t.string "route_stop_pattern_onestop_id"
-    t.string "operator_onestop_id"
-    t.string "origin_onestop_id"
-    t.string "origin_timezone"
-    t.time "origin_arrival_time"
-    t.time "origin_departure_time"
-    t.string "origin_timepoint_source"
-    t.float "origin_dist_traveled"
-    t.string "destination_onestop_id"
-    t.string "destination_timezone"
-    t.time "destination_arrival_time"
-    t.time "destination_departure_time"
-    t.string "destination_timepoint_source"
-    t.time "window_start"
-    t.time "window_end"
-    t.string "trip"
-    t.string "trip_headsign"
-    t.string "trip_short_name"
-    t.string "block_id"
-    t.date "service_start_date"
-    t.date "service_end_date"
-    t.text "service_days_of_week"
-    t.text "service_added_dates"
-    t.text "service_except_dates"
-    t.boolean "wheelchair_accessible"
-    t.boolean "bikes_allowed"
-    t.string "drop_off_type"
-    t.string "string"
-    t.string "pickup_type"
-    t.string "frequency_type"
-    t.integer "frequency_headway_seconds"
-    t.time "frequency_start_time"
-    t.time "frequency_end_time"
+  create_table "shape_trips", force: :cascade do |t|
+    t.integer "shape_shape_id"
+    t.string "trip_trip_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "feed_version_sha1"
+  end
+
+  create_table "shapes", force: :cascade do |t|
+    t.integer "shape_id"
+    t.float "shape_pt_lat"
+    t.float "shape_pt_lon"
+    t.integer "shape_pt_sequence"
     t.float "shape_dist_traveled"
-    t.float "destination_dist_traveled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "shape_trips_id"
+    t.index ["shape_trips_id"], name: "index_shapes_on_shape_trips_id"
   end
 
-  create_table "stop_times", force: :cascade do |t|
-    t.integer "trip_id"
+  create_table "stop_times", id: :serial, force: :cascade do |t|
     t.time "arrival_time"
     t.time "departure_time"
-    t.integer "stop_id"
     t.integer "stop_sequence"
     t.string "stop_headsign"
     t.integer "pickup_type"
     t.integer "drop_off_type"
     t.float "shape_dist_traveled"
     t.integer "timepoint"
+    t.bigint "trip_id"
+    t.bigint "stop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["stop_id"], name: "index_stop_times_on_stop_id"
+    t.index ["trip_id"], name: "index_stop_times_on_trip_id"
   end
 
-  create_table "stops", force: :cascade do |t|
-    t.integer "stop_id"
+  create_table "stops", primary_key: "stop_id", id: :serial, force: :cascade do |t|
     t.string "stop_code"
     t.string "stop_name"
     t.text "stop_desc"
@@ -116,35 +101,29 @@ ActiveRecord::Schema.define(version: 2018_08_01_153217) do
     t.string "zone_id"
     t.string "stop_url"
     t.integer "location_type"
-    t.string "parent_station"
+    t.integer "parent_station"
     t.string "stop_timezone"
     t.integer "wheelchair_boarding"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "trips", force: :cascade do |t|
-    t.integer "route_id"
-    t.integer "service_id"
-    t.integer "trip_id"
+  create_table "trips", primary_key: "trip_id", id: :serial, force: :cascade do |t|
     t.string "trip_headsign"
     t.string "trip_short_name"
     t.integer "direction_id"
-    t.integer "block_id"
-    t.integer "shape_id"
+    t.string "block_id"
     t.integer "wheelchair_accessible"
     t.integer "bikes_allowed"
+    t.string "shape_id"
+    t.string "route_id"
+    t.string "service_id"
+    t.bigint "shape_trips_id"
+    t.bigint "calendar_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "provider"
-    t.string "uid"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "image"
+    t.index ["calendar_id"], name: "index_trips_on_calendar_id"
+    t.index ["shape_trips_id"], name: "index_trips_on_shape_trips_id"
   end
 
 end
