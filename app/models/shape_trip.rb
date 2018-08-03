@@ -1,2 +1,0 @@
-class ShapeTrip < ApplicationRecord
-end

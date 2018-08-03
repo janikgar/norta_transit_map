@@ -38,7 +38,7 @@ module ApplicationHelper
         get_zip_file_request(Agency)
     end
     
-    def get_zip_file_request(model, file_path = 'app/assets/temp.zip', test = false)
+    def get_zip_file_request(model, file_path = 'app/assets/temp.zip', test = true)
         continue = true
         model_string = model.name.underscore.pluralize # Convert the model's CamelCase name to plural & snake_case to query GTFS
         # Below, we use public_send to call the method given its name
@@ -50,7 +50,33 @@ module ApplicationHelper
             request.each do |response|
                 parsed_response = response.instance_values
                 parsed_response.delete('feed') # The GTFS library includes a reference to the feed object; we don't need this
-                model.create!(parsed_response)
+                # model.create!(parsed_response)
+                puts model_string
+                case model_string
+                # when Shape
+                #     continue
+                when 'trips'
+                    parsed_response['id'] = parsed_response['trip_id'] 
+                    parsed_response['calendar_id'] = parsed_response['service_id']
+                    parsed_response.delete('trip_id')
+                    parsed_response.delete('service_id')
+                when 'stops'
+                    parsed_response['id'] = parsed_response['stop_id']
+                    parsed_response.delete('stop_id')
+                when 'calendars'
+                    parsed_response['id'] = parsed_response['service_id']
+                    parsed_response.delete('service_id')
+                when 'routes'
+                    parsed_response['id'] = parsed_response['route_id']
+                    parsed_response.delete('route_id')
+                when 'agencies'
+                    puts 'agency'
+                    parsed_response['id'] = parsed_response['agency_id']
+                    parsed_response.delete('agency_id')
+                end
+                puts parsed_response
+                new_item = model.new(parsed_response)
+                new_item.save(validate: false)
                 continue = false if test == true
                 # binding.pry
             end

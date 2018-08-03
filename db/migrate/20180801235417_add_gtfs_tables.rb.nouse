@@ -100,11 +100,5 @@ class AddGtfsTables < ActiveRecord::Migration[5.2]
       t.timestamps
       t.belongs_to :shape_trips, index: true
     end
-
-    create_table :shape_trips do |t|
-      t.integer :shape_shape_id
-      t.string :trip_trip_id
-      t.timestamps
-    end
   end
 end

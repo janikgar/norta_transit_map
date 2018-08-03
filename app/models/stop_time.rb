@@ -1,4 +1,4 @@
 class StopTime < ApplicationRecord
-    belongs_to :trip#, foreign_key: :trip_id
-    belongs_to :stop#, foreign_key: :stop_id
+    has_many :trips
+    has_many :stops
 end

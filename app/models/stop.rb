@@ -1,3 +1,3 @@
 class Stop < ApplicationRecord
-    has_many :stop_times
+    belongs_to :stop_time
 end

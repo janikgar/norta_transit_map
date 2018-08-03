@@ -1,3 +1,3 @@
 class Shape < ApplicationRecord
-    belongs_to :trip#, foreign_key: :trip_id
+    has_and_belongs_to_many :trips
 end

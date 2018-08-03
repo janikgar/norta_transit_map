@@ -10,24 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_235417) do
+ActiveRecord::Schema.define(version: 2018_08_03_014434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "agencies", primary_key: "agency_id", id: :serial, force: :cascade do |t|
+  create_table "agencies", force: :cascade do |t|
     t.string "agency_name"
-    t.string "agency_url"
     t.string "agency_timezone"
-    t.string "agency_lang"
     t.string "agency_phone"
     t.string "agency_fare_url"
     t.string "agency_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "agency_url"
+    t.string "agency_lang"
   end
 
-  create_table "calendars", primary_key: "service_id", id: :serial, force: :cascade do |t|
+  create_table "calendars", force: :cascade do |t|
     t.boolean "sunday"
     t.boolean "monday"
     t.boolean "tuesday"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_235417) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "routes", primary_key: "route_id", id: :serial, force: :cascade do |t|
+  create_table "routes", force: :cascade do |t|
     t.string "route_short_name"
     t.string "route_long_name"
     t.text "route_desc"
@@ -50,32 +50,30 @@ ActiveRecord::Schema.define(version: 2018_08_01_235417) do
     t.string "route_color"
     t.string "route_text_color"
     t.integer "route_sort_order"
-    t.bigint "agency_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "agency_id"
     t.index ["agency_id"], name: "index_routes_on_agency_id"
   end
 
-  create_table "shape_trips", force: :cascade do |t|
-    t.integer "shape_shape_id"
-    t.string "trip_trip_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "shapes", force: :cascade do |t|
-    t.integer "shape_id"
     t.float "shape_pt_lat"
     t.float "shape_pt_lon"
     t.integer "shape_pt_sequence"
-    t.float "shape_dist_traveled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "shape_trips_id"
-    t.index ["shape_trips_id"], name: "index_shapes_on_shape_trips_id"
+    t.string "shape_id"
+    t.float "shape_dist_traveled"
   end
 
-  create_table "stop_times", id: :serial, force: :cascade do |t|
+  create_table "shapes_trips", force: :cascade do |t|
+    t.bigint "shape_id"
+    t.bigint "trip_id"
+    t.index ["shape_id"], name: "index_shapes_trips_on_shape_id"
+    t.index ["trip_id"], name: "index_shapes_trips_on_trip_id"
+  end
+
+  create_table "stop_times", force: :cascade do |t|
     t.time "arrival_time"
     t.time "departure_time"
     t.integer "stop_sequence"
@@ -84,15 +82,13 @@ ActiveRecord::Schema.define(version: 2018_08_01_235417) do
     t.integer "drop_off_type"
     t.float "shape_dist_traveled"
     t.integer "timepoint"
-    t.bigint "trip_id"
-    t.bigint "stop_id"
+    t.string "trip_id"
+    t.string "stop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["stop_id"], name: "index_stop_times_on_stop_id"
-    t.index ["trip_id"], name: "index_stop_times_on_trip_id"
   end
 
-  create_table "stops", primary_key: "stop_id", id: :serial, force: :cascade do |t|
+  create_table "stops", force: :cascade do |t|
     t.string "stop_code"
     t.string "stop_name"
     t.text "stop_desc"
@@ -108,22 +104,25 @@ ActiveRecord::Schema.define(version: 2018_08_01_235417) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "trips", primary_key: "trip_id", id: :serial, force: :cascade do |t|
+  create_table "trips", force: :cascade do |t|
     t.string "trip_headsign"
     t.string "trip_short_name"
     t.integer "direction_id"
     t.string "block_id"
     t.integer "wheelchair_accessible"
     t.integer "bikes_allowed"
-    t.string "shape_id"
-    t.string "route_id"
-    t.string "service_id"
-    t.bigint "shape_trips_id"
-    t.bigint "calendar_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "route_id"
+    t.bigint "calendar_id"
+    t.string "shape_id"
     t.index ["calendar_id"], name: "index_trips_on_calendar_id"
-    t.index ["shape_trips_id"], name: "index_trips_on_shape_trips_id"
+    t.index ["route_id"], name: "index_trips_on_route_id"
   end
 
+  add_foreign_key "routes", "agencies"
+  add_foreign_key "shapes_trips", "shapes"
+  add_foreign_key "shapes_trips", "trips"
+  add_foreign_key "trips", "calendars"
+  add_foreign_key "trips", "routes"
 end
