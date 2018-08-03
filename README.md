@@ -22,11 +22,13 @@ This app is designed to help show you information about New Orleans Regional Tra
 
 ## Build
 In order to have the OmniAuth gems function, Facebook and Github API Keys & Secrets are required. They can be set in `config/application.yml` with the following:
-`FACEBOOK_APP_ID: # Facebook key here
+```
+FACEBOOK_APP_ID: # Facebook key here
 FACEBOOK_APP_SECRET: # Facebook secret here
 
 GITHUB_KEY: # GitHub key here
-GITHUB_SECRET: # GitHub secret here`
+GITHUB_SECRET: # GitHub secret here
+```
 
 In order to populate the database, the most up-to-date NORTA GTFS file is included at `app/assets/temp.zip` (TODO: change this name). The application helper `helper.get_all_models` can be run from this local file in a Rails console.
 
