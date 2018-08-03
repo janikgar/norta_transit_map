@@ -2,7 +2,7 @@ class PlatformController < ApplicationController
   def view
     @routes = Route.all
     # @sorted_routes = 
-    @sorted_routes = sort_routes_by_name(@routes)
+    @sorted_routes = Route.select(:id, :route_short_name).order(:route_short_name)
   end
 
   def route
@@ -14,15 +14,15 @@ class PlatformController < ApplicationController
   end
 
   private
-    def sort_routes_by_name(routes)
-      sortable_records = []
-      routes.select(:route_short_name, :route_id).each do |route|
-      # routes.select(:name, :id).each do |route|
-        # name = route[:name].gsub(/\D/, '').to_i # Remove non-digit characters and convert route name to integer so we can sort
-        name = route[:name].to_i # Remove non-digit characters and convert route name to integer so we can sort
-        sortable_records.push({name: name, record_id: route[:id]})
-      end
-      return sortable_records.sort_by{ |record| record[:name] }
-    end
+    # def sort_routes_by_name(routes)
+    #   sortable_records = []
+    #   routes.select(:route_short_name, :id).each do |route|
+    #   # routes.select(:name, :id).each do |route|
+    #     # name = route[:name].gsub(/\D/, '').to_i # Remove non-digit characters and convert route name to integer so we can sort
+    #     name = route[:name].to_i # Remove non-digit characters and convert route name to integer so we can sort
+    #     sortable_records.push({name: name, record_id: route[:id]})
+    #   end
+    #   return sortable_records.sort_by{ |record| record[:name] }
+    # end
   # END private
 end

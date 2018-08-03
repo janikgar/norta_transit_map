@@ -8,10 +8,10 @@
     <th>Name</th>
   </tr>
   <% @sorted_routes.each do |this_route| %>
-    <% route = Route.find(this_route[:record_id]) %>
-    <tr style="background-color: #<%= route['tags']['route_color'] %>; color: #<%= route['tags']['route_text_color']%>">
-      <td><%= route.name %></td>
-      <td><%= route['tags']['route_long_name'] %></td>
+    <% route = Route.find(this_route[:id]) %>
+    <tr style="background-color: #<%= route.route_color %>; color: #<%= route.route_text_color%>">
+      <td><%= route.route_short_name %></td>
+      <td><%= route.route_long_name %></td>
     </tr>
   <% end %>
 </table>

@@ -53,8 +53,8 @@ module ApplicationHelper
                 # model.create!(parsed_response)
                 puts model_string
                 case model_string
-                # when Shape
-                #     continue
+                when 'shape'
+                    continue
                 when 'trips'
                     parsed_response['id'] = parsed_response['trip_id'] 
                     parsed_response['calendar_id'] = parsed_response['service_id']

@@ -66,13 +66,6 @@ ActiveRecord::Schema.define(version: 2018_08_03_014434) do
     t.float "shape_dist_traveled"
   end
 
-  create_table "shapes_trips", force: :cascade do |t|
-    t.bigint "shape_id"
-    t.bigint "trip_id"
-    t.index ["shape_id"], name: "index_shapes_trips_on_shape_id"
-    t.index ["trip_id"], name: "index_shapes_trips_on_trip_id"
-  end
-
   create_table "stop_times", force: :cascade do |t|
     t.time "arrival_time"
     t.time "departure_time"
@@ -121,8 +114,6 @@ ActiveRecord::Schema.define(version: 2018_08_03_014434) do
   end
 
   add_foreign_key "routes", "agencies"
-  add_foreign_key "shapes_trips", "shapes"
-  add_foreign_key "shapes_trips", "trips"
   add_foreign_key "trips", "calendars"
   add_foreign_key "trips", "routes"
 end
