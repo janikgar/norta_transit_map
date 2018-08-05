@@ -14,10 +14,19 @@
  *= require_self
  */
 
- @import 'bootstrap-sprockets';
- @import 'bootstrap';
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 
- #mapid {
-     height: 320px;
-    //  width: 320px;
- }
+body {
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+
+#mapid {
+    height: 100vw;
+    width: 100vw;
+}

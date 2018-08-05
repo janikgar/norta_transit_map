@@ -8,6 +8,26 @@ module ApplicationHelper
     #     # end
     # end
 
+    ## This function no longer works once Shape has been dropped from the model.
+
+    # def add_shapes_to_routes
+    #     Route.all.each do |route|
+    #         if route.shape_array
+    #             route.shape_array = []
+    #         end
+    #         route_array = []
+    #         shape_ids = route.trips.pluck(:shape_id).uniq
+    #         shape_ids.each do |shape|
+    #             these_shapes = Shape.where(shape_id: shape)
+    #             shape_array = []
+    #             these_shapes.each do |this_shape|
+    #                 shape_array.push([this_shape.shape_pt_lat, this_shape.shape_pt_lon])
+    #             end
+    #             route_array.push(shape_array)
+    #         end
+    #         route.update(shape_array: route_array)
+    #     end
+    # end
     
     def get_stop_times
         # This is the original GTFS feed model, as opposed to Transitland's version above. We can only take this from the GTFS .zip, not Transitland's API.

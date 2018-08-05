@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    //$(document).on("turbolinks:load", function() {
+    $(document).ready(function() {
+        if (map != undefined) {
+            map.remove()
+        }
+        var baseLayer = L.tileLayer.provider('Stamen.Toner');
+        var map = L.map('mapid', {
+            center: [29.961187, -90.066967],
+            zoom: 11,
+            layers: [baseLayer]
+        });
+        //map.locate({setView: true, maxZoom: 16});
+        
+
+        var paths = {}
+        <% routes.each do |this_route| %>
+            <% route = Route.find(this_route[:id]) %>
+            var coordPath = <%= j route.shape_array.to_s %>
+            var pathColor = "<%= j route.route_color %>"
+            for (var i=0; i < coordPath.length; i++){
+                var routePath = L.polyline(coordPath, {color: '#'+pathColor});
+                routePath.addTo(map);
+                paths["<%=j link_to "#{route.route_short_name}: #{route.route_long_name}", route_path(route: route.id)%>"] = routePath;
+                routePath.bindPopup("<div style=\"padding: 5px; background-color: #<%=j route.route_color%> \
+                    ; color: #<%= j route.route_text_color%> \
+                    \"><strong>Route: \
+                    <%= j "#{route.route_short_name}: #{route.route_long_name}" %> \
+                    </strong><br /><p> \
+                    <%= j link_to "Info and Schedule", route_path(route: route),  style: "color: ##{route.route_text_color}"%> \
+                    </div>"
+                );
+            }
+        <% end %>
+        var baseMap = { "Base" : baseLayer }
+        L.control.layers(baseMap, paths, {"hideSingleBase" : true}).addTo(map);
+        //map.fitBounds(paths.getBounds());
+    });
+</script>

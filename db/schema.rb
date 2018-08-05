@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_03_014434) do
+ActiveRecord::Schema.define(version: 2018_08_04_214459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2018_08_03_014434) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "agency_id"
+    t.text "shape_array"
     t.index ["agency_id"], name: "index_routes_on_agency_id"
   end
 
@@ -64,6 +65,13 @@ ActiveRecord::Schema.define(version: 2018_08_03_014434) do
     t.datetime "updated_at", null: false
     t.string "shape_id"
     t.float "shape_dist_traveled"
+  end
+
+  create_table "shapes_trips", force: :cascade do |t|
+    t.bigint "shape_id"
+    t.bigint "trip_id"
+    t.index ["shape_id"], name: "index_shapes_trips_on_shape_id"
+    t.index ["trip_id"], name: "index_shapes_trips_on_trip_id"
   end
 
   create_table "stop_times", force: :cascade do |t|
@@ -114,6 +122,8 @@ ActiveRecord::Schema.define(version: 2018_08_03_014434) do
   end
 
   add_foreign_key "routes", "agencies"
+  add_foreign_key "shapes_trips", "shapes"
+  add_foreign_key "shapes_trips", "trips"
   add_foreign_key "trips", "calendars"
   add_foreign_key "trips", "routes"
 end

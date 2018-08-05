@@ -1,6 +1,7 @@
 class Route < ApplicationRecord
     belongs_to :agency
     has_many :trips
+    serialize :shape_array, Array
 
     # private
         def get_shapes

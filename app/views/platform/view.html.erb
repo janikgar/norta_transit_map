@@ -1,8 +1,7 @@
-<h1>View map</h1>
 <div id="mapid"></div>
 
-<%= render "system_map" %>
-<table class="table">
+<%= render "map", routes: @sorted_routes %>
+<!--<table class="table">
   <tr>
     <th>Number</th>
     <th>Name</th>
@@ -14,4 +13,4 @@
       <td><%= route.route_long_name %></td>
     </tr>
   <% end %>
-</table>
+</table>-->

@@ -1,4 +1,4 @@
 <h1><%= @route.route_short_name %>: <%= @route.route_long_name %></h1>
 <div id="mapid"></div>
 
-<%= render "route_map", route: @route.id %>
+<%= render "map", routes: [name: @route.route_short_name, id: @route.id] %>
