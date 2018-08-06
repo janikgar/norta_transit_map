@@ -1,4 +1,12 @@
 <h1><%= @route.route_short_name %>: <%= @route.route_long_name %></h1>
-<div id="mapid"></div>
+<!--<div id="mapid"></div>-->
 
-<%= render "map", routes: [name: @route.route_short_name, id: @route.id] %>
+<% @schedules %>
+<table class="table table-striped">
+    <% @stops.each do |stop|%>
+        <tr>
+            <td><%= stop.stop_name %></td>
+        </tr>
+    <% end %>
+</table>
+<% render "map", routes: [name: @route.route_short_name, id: @route.id] %>

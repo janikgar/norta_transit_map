@@ -2,8 +2,17 @@ class Route < ApplicationRecord
     belongs_to :agency
     has_many :trips
     serialize :shape_array, Array
+    serialize :stops, Array
 
     # private
+        def get_stops
+            trips = self.trips
+            stops = []
+            trips.each do |trip|
+                stops.push(StopTime.where(trip_id: trip.id).pluck(:stop_id).uniq)
+            end
+            return stops.flatten!.uniq!
+        end
         def get_shapes
             shapes = self.trips.pluck(:shape_id).uniq
             coords = []

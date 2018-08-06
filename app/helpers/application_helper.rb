@@ -29,6 +29,18 @@ module ApplicationHelper
     #     end
     # end
     
+    def add_stops_to_routes
+        Route.all.each do |route|
+            trips = route.trips
+            stops = []
+            trips.each do |trip|
+                stops.push(StopTime.where(trip_id: trip.id).pluck(:stop_id).uniq)
+            end
+            stops.flatten!.uniq!
+            route.update(stops: stops)
+        end
+    end
+    
     def get_stop_times
         # This is the original GTFS feed model, as opposed to Transitland's version above. We can only take this from the GTFS .zip, not Transitland's API.
         get_zip_file_request(StopTime)

@@ -11,6 +11,26 @@ class PlatformController < ApplicationController
     #   redirect_to root_path
     # end
     @route = Route.find(params[:route])
+    @trips = Trip.where(route_id: params[:route]).order(:calendar_id)
+    @all_stop_times = []
+    @all_stops = []
+    @trips.each do |trip|
+      @stop_times = StopTime.where(trip_id: trip.id)
+      @stop_times.each do |stop_time|
+        @stops = Stop.where(id: stop_time.stop_id)
+        @all_stop_times.push(stop_time)
+        @stops.each do |stop|
+          @all_stops.push(stop)
+        end
+      end
+    end
+    # @schedules = []
+    # @calendars = Calendar.all
+    # @calendars.each do |calendar|
+    #   @trips.each do |trip|
+    #     @schedules.push(StopTime.where(trip_id: trip[:id]));
+    #   end
+    # end
   end
 
   private
