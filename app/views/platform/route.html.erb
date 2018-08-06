@@ -1,12 +1,4 @@
-<h1><%= @route.route_short_name %>: <%= @route.route_long_name %></h1>
-<!--<div id="mapid"></div>-->
+<h1><%= JSON.parse(@routes)['properties']['name']%>: <%= JSON.parse(@routes)['properties']['tags']['route_long_name']%></h1>
+<div id="mapid"></div>
 
-<% @schedules %>
-<table class="table table-striped">
-    <% @stops.each do |stop|%>
-        <tr>
-            <td><%= stop.stop_name %></td>
-        </tr>
-    <% end %>
-</table>
-<% render "map", routes: [name: @route.route_short_name, id: @route.id] %>
+<%= render "map", {routes: @routes, bounds: @bounds} %>

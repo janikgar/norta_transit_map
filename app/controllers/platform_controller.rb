@@ -1,39 +1,33 @@
 class PlatformController < ApplicationController
   def view
-    @routes = Route.all
-    # @sorted_routes = 
-    @sorted_routes = Route.select(:id, :route_short_name).order(:route_short_name)
+    @routes = File.open("#{Rails.root.to_s}/public/routes.geojson").read
+    @bounds = File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson").read
   end
-
+  
   def route
-    # if !params[:route]
-    #   flash[:notice] = 'Select a route'
-    #   redirect_to root_path
-    # end
-    @route = Route.find(params[:route])
-    @trips = Trip.where(route_id: params[:route]).order(:calendar_id)
-    @all_stop_times = []
-    @all_stops = []
-    @trips.each do |trip|
-      @stop_times = StopTime.where(trip_id: trip.id)
-      @stop_times.each do |stop_time|
-        @stops = Stop.where(id: stop_time.stop_id)
-        @all_stop_times.push(stop_time)
-        @stops.each do |stop|
-          @all_stops.push(stop)
-        end
+    @routes_geojson = File.open("#{Rails.root.to_s}/public/routes.geojson").read
+    @bounds_geojson = File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson").read
+    @routes = JSON.parse(@routes_geojson)['features']
+    @routes.each do |route|
+      if route['properties']['name'] == params[:route].to_s
+        @routes = JSON.generate(route)
+        @bounds = JSON.generate(route)
       end
     end
-    # @schedules = []
-    # @calendars = Calendar.all
-    # @calendars.each do |calendar|
-    #   @trips.each do |trip|
-    #     @schedules.push(StopTime.where(trip_id: trip[:id]));
-    #   end
-    # end
   end
 
   private
+    def get_bounds_geojson
+      request_url = ENV['TL_GEOJSON_BOUNDS']
+      request = HTTParty.get(request_url)
+      bounds_geo_json = JSON.parse(request.parsed_response).to_json
+    end
+    def get_transitland_routes_geojson
+      request_url = ENV['TL_GEOJSON_ROUTES'] + ENV['NORTA_ONESTOP'] + "&per_page=false"
+      request = HTTParty.get(request_url)
+      routes_geo_json = JSON.parse(request.parsed_response).to_json
+    end
+
     def sort_routes_by_name(routes)
       sortable_records = []
       routes.select(:route_short_name, :id).each do |route|
