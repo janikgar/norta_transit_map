@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    //$(document).on("turbolinks:load", function() {
+    function routeInfoPopup(feature, layer) {
+        layer.bindPopup(
+            "<strong>" + feature.properties.name + ": " + feature.properties.tags.route_long_name + "</strong><br />\n" +
+            "<a href=\"route?route=" + feature.properties.name + "\">Route info</a>"
+        )
+    }
+    $(document).ready(function() {
+        if (map != undefined) {
+            map.remove()
+        }
+        var baseLayer = L.tileLayer.provider('Stamen.Toner');
+        var map = L.map('mapid', {
+            center: [29.961187, -90.066967],
+            zoom: 11,
+            layers: [baseLayer]
+        });
+        //map.locate({setView: true, maxZoom: 16});
+        
+        var bounds = L.geoJSON(<%=bounds.html_safe%>);
+        
+        var routes = L.geoJSON(<%=routes.html_safe%>, {
+            style: function(feature) {
+                return {color: "#"+feature.properties.color};
+            },
+            onEachFeature: routeInfoPopup
+        })
+        .addTo(map);
+        var baseMap = { "Base" : baseLayer }
+        L.control.layers(baseMap, routes).addTo(map);
+        map.fitBounds(bounds.getBounds());
+    });
+</script>

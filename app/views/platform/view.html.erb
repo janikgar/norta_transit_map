@@ -1,17 +1,3 @@
-<h1>View map</h1>
 <div id="mapid"></div>
 
-<%= render "system_map" %>
-<table class="table">
-  <tr>
-    <th>Number</th>
-    <th>Name</th>
-  </tr>
-  <% @sorted_routes.each do |this_route| %>
-    <% route = Route.find(this_route[:id]) %>
-    <tr style="background-color: #<%= route.route_color %>; color: #<%= route.route_text_color%>">
-      <td><%= route.route_short_name %></td>
-      <td><%= route.route_long_name %></td>
-    </tr>
-  <% end %>
-</table>
+<%= render "map", {routes: @routes, bounds: @bounds} %>

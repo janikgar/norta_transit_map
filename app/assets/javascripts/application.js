@@ -15,4 +15,5 @@
 //= require bootstrap
 //= require activestorage
 //= require turbolinks
-//= require_tree .
+//= require leaflet.js
+//= require leaflet-providers.js
