@@ -21,12 +21,37 @@ body {
     padding: 0;
 }
 
+.schedule-box {
+    height: 45vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
 .container-fluid {
     padding: 0;
 }
 
 
 #mapid {
-    height: 80vw;
-    width: 100vw;
+    height: 45vh;
+    width: 100%;
+}
+
+.stop-icon {
+    background-color: rgba(255,255,255, 0.5);
+}
+
+.table {
+    font-size: 0.8em;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    .schedule-box {
+        height: 90vh;
+        overflow-x: scroll;
+    }
+    #mapid {
+        height: 90vh;
+    }
 }
