@@ -18,5 +18,4 @@ RUN bundle install && \
 # only if we're running Figaro
 
 COPY . /app
-RUN rails db:setup
 EXPOSE 3000

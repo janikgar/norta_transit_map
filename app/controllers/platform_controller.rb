@@ -5,20 +5,26 @@ class PlatformController < ApplicationController
   end
   
   def route
-    @routes_import = JSON.parse(File.open("#{Rails.root.to_s}/public/routes.geojson").read)['features']
-    # @bounds_geojson = JSON.parse(File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson").read)['features']
-    @stops_import = JSON.parse(File.open("#{Rails.root.to_s}/public/stops.geojson").read)
+    @routes_file = File.open("#{Rails.root.to_s}/public/routes.geojson")
+    @bounds_file = File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson")
+    @stops_file = File.open("#{Rails.root.to_s}/public/stops.geojson")
+    @routes_import = JSON.parse(@routes_file.read)['features']
+    @bounds_import = JSON.parse(@bounds_file.read)['features']
+    @stops_import = JSON.parse(@stops_file.read)
+    @routes_file.close()
+    @bounds_file.close()
+    @stops_file.close()
     @routes_import.each do |route|
       if route['properties']['name'] == params[:route].to_s
         @onestop = route['properties']['onestop_id']
         @routes = JSON.generate(route)
-        # @bounds = JSON.generate(route)
+        @bounds = JSON.generate(route)
       end
     end
-    @display_stops = @stops.clone
+    @display_stops = @stops_import.clone
     @display_stops.delete('features')
     @display_stops['features'] = []
-    @stops['features'].each do |stop|
+    @stops_import['features'].each do |stop|
       stop['properties']['routes_serving_stop'].each do |route_serving_stop|
         if route_serving_stop['route_name'] == params[:route].to_s
           @display_stops['features'].push(stop)
@@ -35,6 +41,8 @@ class PlatformController < ApplicationController
       # @directions_hash[k] = v
       @directions.push([sched['trip_headsign'], get_stop_name_by_id(sched['origin_onestop_id']), sched['origin_arrival_time']])
     end
+
+    @schedule_import = nil
 
     @directions.group_by{|k, v1, v2| k}.each do |k1, v1|
       # puts "Key: #{k}"
