@@ -9,11 +9,12 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   username: postgres
+  host: db
 
 development:
   <<: *default
   database: norta_tl_development
-  password: ENV['local_db_pw']
+  # password: ENV['local_db_pw']
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -21,7 +22,7 @@ development:
 test:
   <<: *default
   database: norta_tl_test
-  password: ENV['local_db_pw']
+  # password: ENV['local_db_pw']
 
 production:
   <<: *default

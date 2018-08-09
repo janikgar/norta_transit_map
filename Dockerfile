@@ -1,7 +1,7 @@
-FROM ruby:2.3-alpine
-LABEL MAINTAINER janikgar@pm.me
+FROM ruby:2.3.7-alpine
+LABEL maintainer=janikgar@pm.me
 
-ENV BUILD_PACKAGES bash curl-dev ruby-dev build-base postgresql-dev git
+ENV BUILD_PACKAGES bash build-base curl-dev git postgresql-dev ruby-dev
 # ENV RUBY_PACKAGES 
 
 RUN apk update && apk upgrade && \
@@ -13,9 +13,10 @@ WORKDIR /app
 
 COPY Gemfile /app
 COPY Gemfile.lock /app
-RUN bundle install
+RUN bundle install && \
+    figaro install
 # only if we're running Figaro
-RUN figaro install
 
 COPY . /app
+RUN rails db:setup
 EXPOSE 3000

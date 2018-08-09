@@ -63,14 +63,15 @@ group :test do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data'
 
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 # gem 'geocoder'
 gem 'figaro'
 gem 'httparty'
-# gem 'omniauth-facebook'
-# gem 'omniauth-github'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
 gem 'gtfs', git: 'https://github.com/transitland/gtfs.git'
 # gem 'yaml_db'
