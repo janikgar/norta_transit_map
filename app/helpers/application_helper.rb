@@ -1,5 +1,74 @@
 module ApplicationHelper
 
+  def import_routes(url = nil)
+    if url == nil
+      url = 'https://transit.land/api/v1/routes?operated_by=o-9vrf-neworleansrta'
+    end
+    request = HTTParty.get(url)
+    response = JSON.parse(request.body)['routes']
+    meta = JSON.parse(request.body)['meta']
+    # request = nil # TODO: garbage collect (if needed)
+
+    response.each do |route|
+      new_route = Route.create(short_name: route['name'], long_name: route['tags']['route_long_name'], color: route['tags']['route_color'], text_color: route['tags']['route_text_color'], onestop_id: route['onestop_id'], remote_updated_at: route['updated_at'])
+    end
+    if !meta['next']
+      return 0
+    else
+      # Since this will eventually need to be an Active Job, remember to re-structure!
+      sleep 4
+      import_routes(meta['next'])
+    end
+  end
+
+  def import_sched(route_string, url = nil)
+    route_onestop = Route.find_by(short_name: route_string).onestop_id
+    if url == nil
+      url = "https://transit.land/api/v1/schedule_stop_pairs?date=today&operator_onestop_id=o-9vrf-neworleansrta&route_onestop_id=#{route_onestop}"
+    end
+    request = HTTParty.get(url)
+    response = JSON.parse(request.body)['schedule_stop_pairs']
+    meta = JSON.parse(request.body)['meta']
+    # request = nil # TODO: garbage collect (if needed)
+
+    response.each do |sched|
+      puts sched
+      this_route = Route.find_by(onestop_id: sched['route_onestop_id'])
+      new_sched = Schedule.create(route: this_route.short_name, headsign: sched['trip_headsign'], origin_stop: sched['route_onestop_id'], origin_stop_time: sched['origin_arrival_time'], remote_updated_at: sched['updated_at'])
+    end
+    if !meta['next']
+      return 0
+    else
+      # Since this will eventually need to be an Active Job, remember to re-structure!
+      sleep 4
+      import_sched(route_string, meta['next'])
+    end
+  end
+
+  def perform_route_sched_job(route_string)
+    schedule_update = schedule_exist?(route_string)
+    if schedule_update
+      # If we have schedules in the system, compare with the transit.land version to see if there are new updates
+      remote_test = HTTParty.get("https://transit.land/api/v1/feeds/f-9vrf-neworleansrta")
+      last_update = remote_test['updated_at']
+      if DateTime.parse(last_update) > schedule_update
+        #import
+      end
+    else
+      #import
+    end
+  end
+
+  def schedule_exist?(route_string)
+    if Schedule.count != 0
+      find_schedule = Route.where(route: route_string).pluck(remote_updated_at)
+      find_schedule.sort!
+      return find_schedule.first
+    else
+      return false
+    end
+  end
+
     def get_transitland_request(model, url, test = false)
         continue = true
         request_url = url + ENV['NORTA_ONESTOP']
