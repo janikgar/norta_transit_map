@@ -21,7 +21,7 @@
                   <tr>
                     <td><strong><%=hash[0]%></strong></td>
                     <% hash[1].sort.each do |value| %>
-                      <td><%=Time.parse(value).strftime("%l:%M %p")%></td>
+                      <td><!--Time.parse(value).strftime("%l:%M %p")--><%=value%></td>
                     <% end %>
                   </tr>
                 <% end %>
