@@ -5,14 +5,14 @@ class PlatformController < ApplicationController
   end
   
   def route
-    @routes = JSON.parse(File.open("#{Rails.root.to_s}/public/routes.geojson").read)['features']
-    @bounds_geojson = JSON.parse(File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson").read)['features']
-    @stops = JSON.parse(File.open("#{Rails.root.to_s}/public/stops.geojson").read)
-    @routes.each do |route|
+    @routes_import = JSON.parse(File.open("#{Rails.root.to_s}/public/routes.geojson").read)['features']
+    # @bounds_geojson = JSON.parse(File.open("#{Rails.root.to_s}/public/o-9vrf-neworleansrta.geojson").read)['features']
+    @stops_import = JSON.parse(File.open("#{Rails.root.to_s}/public/stops.geojson").read)
+    @routes_import.each do |route|
       if route['properties']['name'] == params[:route].to_s
         @onestop = route['properties']['onestop_id']
         @routes = JSON.generate(route)
-        @bounds = JSON.generate(route)
+        # @bounds = JSON.generate(route)
       end
     end
     @display_stops = @stops.clone

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.3.3'
+ruby '2.3.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
@@ -17,7 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'duktape'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+# gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -53,6 +53,10 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+  # Benchmarking memory usage
+  gem 'derailed_benchmarks'
+  # Required by derailed_benchmarks for Windows
+  gem 'sys-proctable'
 end
 
 group :test do
@@ -63,10 +67,10 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jquery-rails'
 gem 'bootstrap-sass'
-gem 'geocoder'
+# gem 'geocoder'
 gem 'figaro'
 gem 'httparty'
-gem 'omniauth-facebook'
-gem 'omniauth-github'
+# gem 'omniauth-facebook'
+# gem 'omniauth-github'
 gem 'gtfs', git: 'https://github.com/transitland/gtfs.git'
-gem 'yaml_db'
+# gem 'yaml_db'
