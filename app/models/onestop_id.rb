@@ -1,2 +1,0 @@
-class OnestopId < ApplicationRecord
-end

@@ -25,7 +25,7 @@
                       <% if split_time[0] == "24" %>
                         <% now_date = DateTime.now %>
                         <% this_time = DateTime.new(now_date.year, now_date.month, now_date.day + 1, split_time[0].to_i-24, split_time[1].to_i, split_time[2].to_i) %>
-                        <td><%=this_time.strftime("%m/%d %l:%M %p")%></td>
+                        <td><%=this_time.strftime("%l:%M %p\n(%m/%d)")%></td>
                       <% else %>
                         <% this_time = Time.parse(time) %>
                         <td><%=this_time.strftime("%l:%M %p")%></td>
