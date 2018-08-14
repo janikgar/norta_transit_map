@@ -1,4 +1,4 @@
-FROM ruby:2.3.3-alpine
+FROM ruby:2.3-alpine
 LABEL maintainer=janikgar@pm.me
 
 ENV BUILD_PACKAGES bash build-base curl-dev git postgresql-dev ruby-dev
@@ -7,6 +7,8 @@ ENV BUILD_PACKAGES bash build-base curl-dev git postgresql-dev ruby-dev
 RUN apk update && apk upgrade && \
     apk add $BUILD_PACKAGES && \
     rm -rf /var/cache/apk/*
+
+RUN gem install bundler
 
 RUN mkdir /app
 WORKDIR /app

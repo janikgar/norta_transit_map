@@ -1,5 +1,119 @@
 module ApplicationHelper
 
+  def get_source(local=true)
+    if local
+      source = GTFS::Source.build('public/temp.zip')
+    else
+      source = GTFS::Source.build('http://www.norta.com/CMSTemplates/RTAApplication/MyRTA/OpenSourceDataDownload.aspx?key=YAEVCJMWGJKVBFAD')
+    end
+    return source
+  end
+
+  def load_sched
+    source = get_source
+    schedules = source.stop_times.clone
+    source = nil
+    trips = Trip.all
+    trips.each do |trip|
+      scheds = schedules.select{|sched| sched.trip_id == trip.trip_id}
+      all_scheds = []
+      scheds.each do |sched|
+        time_elements = sched.arrival_time.split(":")
+        if time_elements[0].to_i >= 24
+          puts time_elements
+          time_elements[0] = (time_elements[0].to_i - 24)
+        end
+        this_time = time_elements.join(":")
+        puts this_time
+        all_scheds.push(Time.parse(this_time))
+      end
+      trip.update(times: all_scheds)
+    end
+  end
+
+  def init_calendars
+    source = get_source
+    calendars = source.calendars.clone
+    source = nil
+    calendar_array = []
+    calendars.each do |cal|
+      day_string = ""
+      this_cal = cal.instance_values
+      day_string += "Su" if this_cal['sunday'] == '1'
+      day_string += "M" if this_cal['monday'] == '1'
+      day_string += "T" if this_cal['tuesday'] == '1'
+      day_string += "W" if this_cal['wednesday'] == '1'
+      day_string += "R" if this_cal['thursday'] == '1'
+      day_string += "F" if this_cal['friday'] == '1'
+      day_string += "Sa" if this_cal['saturday'] == '1'
+      calendar_array.push({service_id: this_cal['service_id'], start_date: this_cal['start_date'], end_date: this_cal['end_date'], day_string: day_string})
+    end
+    return calendar_array
+  end
+
+  def add_days_to_trips
+    calendar_array = init_calendars
+    matching_calendar = nil
+    trips = Trip.all
+    trips.each do |trip|
+      calendar_array.each do |cal|
+        if cal[:service_id] == trip.service_id
+          matching_calendar = cal
+        end
+      end
+      trip.update(days: matching_calendar[:day_string])
+    end
+  end
+
+  def add_shapes_to_trips
+    source = get_source
+    shapes = source.shapes.clone
+    source = nil
+    trips = Trip.all
+    trips.each do |trip|
+      shape_array = []
+      these_shapes = shapes.select{|shape| shape.shape_id == trip.shape_id}
+      these_shapes.each do |shape|
+        shape_array.push([shape.shape_pt_lat, shape.shape_pt_lon])
+      end
+      trip.update(points: shape_array)
+    end
+  end
+
+  def load_routes
+    source = get_source
+    routes = source.routes.clone
+    source = nil
+    routes.each do |route|
+      Route.create(short_name: route.route_short_name, long_name: route.route_long_name, onestop_id: nil, vehicle_type: route.route_type, color: route.route_color, text_color: route.route_text_color)
+    end
+  end
+  
+  def load_trips
+    source = get_source
+    trips = source.trips.clone
+    source = nil
+    trips.each do |trip|
+      this_trip = Trip.create(direction_id: trip.direction_id, route_id: trip.route_id, service_id: trip.service_id, shape_id: trip.shape_id, trip_headsign: trip.trip_headsign, trip_id: trip.trip_id, wheelchair_accessible: trip.wheelchair_accessible, bikes_allowed: trip.bikes_allowed)
+    end
+    add_shapes_to_trips
+    add_days_to_trips
+  end
+    
+  def load_shapes
+    source = get_source
+    shapes = source.shapes.clone
+    source = nil
+    shapes.each do |shape|
+      Shape.create(
+        shape_pt_lat: shape.shape_pt_lat,
+        shape_pt_lon: shape.shape_pt_lon,
+        shape_id: shape.shape_id,
+        shape_pt_sequence: shape.shape_pt_sequence
+      )
+    end
+  end
+
   def import_routes(url = nil)
     if url == nil
       url = 'https://transit.land/api/v1/routes?operated_by=o-9vrf-neworleansrta'
@@ -177,4 +291,4 @@ module ApplicationHelper
     #         get_transitland_request(Agency)
     #     end
     # end
-end
+  end

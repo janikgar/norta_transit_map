@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_09_203950) do
+ActiveRecord::Schema.define(version: 2018_08_14_164223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,31 @@ ActiveRecord::Schema.define(version: 2018_08_09_203950) do
     t.datetime "remote_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shapes", force: :cascade do |t|
+    t.string "shape_pt_lat"
+    t.string "shape_pt_lon"
+    t.string "shape_id"
+    t.string "shape_pt_sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string "direction_id"
+    t.string "route_id"
+    t.string "service_id"
+    t.string "shape_id"
+    t.string "trip_headsign"
+    t.string "trip_id"
+    t.string "wheelchair_accessible"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "bikes_allowed"
+    t.text "points"
+    t.text "days"
+    t.text "times"
   end
 
 end
