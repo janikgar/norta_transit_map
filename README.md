@@ -1,3 +1,5 @@
+[![Build Status](https://semaphoreci.com/api/v1/janikgar/norta_transit_map/branches/cached_stops/badge.svg)](https://semaphoreci.com/janikgar/norta_transit_map)
+
 # NORTA Tracker App
 
 This app is designed to help show you information about New Orleans Regional Transit Authority routes.
