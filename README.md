@@ -37,14 +37,3 @@ I have also begun using SemaphoreCI for continuous integration, but this will sh
 ## Deployment
 ### Local
 To run locally, run `bundle install` in the main directory, and then `rails server`. This will show your app at `localhost:3000`.
-
-### Docker
-To run in Docker, make sure that the `docker-compose.yml` and `Dockerfile` both exist in the root directory. You will need Docker Store credentials to pull the images. The following commands should get you up and going:
-```
-$ docker-compose build
-... image will build here, including bundle install ...
-$ docker-compose run web rake db:setup
-... databases will be created ...
-$ docker-compose up
-```
-If Docker is set up correctly, you will find the server at 10.0.75.1.
