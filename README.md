@@ -1,4 +1,4 @@
-[![Build Status](https://semaphoreci.com/api/v1/janikgar/norta_transit_map/branches/cached_stops/badge.svg)](https://semaphoreci.com/janikgar/norta_transit_map)
+[![Build Status](https://semaphoreci.com/api/v1/janikgar/norta_transit_map/branches/master/shields_badge.svg)](https://semaphoreci.com/janikgar/norta_transit_map)
 
 # NORTA Tracker App
 
