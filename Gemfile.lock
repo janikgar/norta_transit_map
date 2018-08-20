@@ -57,7 +57,7 @@ GEM
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
-    autoprefixer-rails (9.1.1)
+    autoprefixer-rails (9.1.2)
       execjs
     bcrypt (3.1.12)
     benchmark-ips (2.7.2)
@@ -75,7 +75,7 @@ GEM
       sass (>= 3.3.4)
     builder (3.2.3)
     byebug (10.0.2)
-    capybara (3.5.1)
+    capybara (3.6.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -141,7 +141,7 @@ GEM
     memory_profiler (0.9.11)
     method_source (0.9.0)
     mimemagic (0.3.2)
-    mini_mime (1.0.0)
+    mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     msgpack (1.2.4)
@@ -172,7 +172,7 @@ GEM
       method_source (~> 0.9.0)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.5)
     rack-test (1.1.0)
@@ -253,9 +253,9 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    turbolinks (5.1.1)
-      turbolinks-source (~> 5.1)
-    turbolinks-source (5.1.0)
+    turbolinks (5.2.0)
+      turbolinks-source (~> 5.2)
+    turbolinks-source (5.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     tzinfo-data (1.2018.5)
@@ -290,23 +290,14 @@ DEPENDENCIES
   capybara (>= 2.15, < 4.0)
   chromedriver-helper
   derailed_benchmarks
-<<<<<<< HEAD
   devise
-  duktape
-=======
->>>>>>> 9469fdea0c1e5f206f67bb1c2d559f2daee8ec3e
   figaro
   gtfs!
   httparty
   jbuilder (~> 2.5)
   jquery-rails
   omniauth-facebook
-<<<<<<< HEAD
-  pg
-=======
-  omniauth-github
   pg (>= 0.18, < 2.0)
->>>>>>> 9469fdea0c1e5f206f67bb1c2d559f2daee8ec3e
   pry-rails
   puma (~> 3.11)
   rails (~> 5.2.0)
