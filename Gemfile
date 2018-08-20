@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.3.7'
+ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
@@ -72,6 +72,8 @@ gem 'bootstrap-sass'
 gem 'figaro'
 gem 'httparty'
 gem 'omniauth-facebook'
-gem 'omniauth-github'
+# gem 'omniauth-github'
 gem 'gtfs', git: 'https://github.com/transitland/gtfs.git'
-# gem 'yaml_db'
+gem 'yaml_db'
+gem 'devise'
+# gem 'gravatar_image_tag'

@@ -10,52 +10,92 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_153519) do
+ActiveRecord::Schema.define(version: 2018_08_20_143742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "onestop_ids", force: :cascade do |t|
-    t.string "name"
+  create_table "email_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_email_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_email_users_on_reset_password_token", unique: true
+  end
+
+  create_table "routes", force: :cascade do |t|
+    t.string "short_name"
+    t.string "long_name"
+    t.string "onestop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "vehicle_type"
     t.string "color"
-    t.text "geometry"
+    t.string "text_color"
+    t.datetime "remote_updated_at"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.string "route"
+    t.string "headsign"
+    t.string "origin_stop"
+    t.time "origin_stop_time"
+    t.datetime "remote_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shapes", force: :cascade do |t|
+    t.string "shape_pt_lat"
+    t.string "shape_pt_lon"
+    t.string "shape_id"
+    t.string "shape_pt_sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string "direction_id"
+    t.string "route_id"
+    t.string "service_id"
+    t.string "shape_id"
+    t.string "trip_headsign"
+    t.string "trip_id"
     t.string "wheelchair_accessible"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "bikes_allowed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text "points"
+    t.text "days"
+    t.text "times"
   end
 
-  create_table "route_stop_patterns", force: :cascade do |t|
-    t.string "onestop_id"
-    t.string "route_onestop_id"
-    t.text "geometry"
-    t.text "stop_pattern"
-    t.text "stop_distances"
-    t.text "identifiers"
-    t.text "trips"
-    t.text "tags"
-    t.string "geometry_source"
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "stops", force: :cascade do |t|
-    t.string "onestop_id"
-    t.text "geometry"
-    t.string "name"
-    t.string "timezone"
-    t.integer "osm_way_id"
-    t.datetime "last_conflated_at"
-    t.text "served_by_vehicle_types"
-    t.boolean "wheelchair_boarding"
-    t.text "geometry_reversegeo"
-    t.text "geometry_centroid"
-    t.text "operators_serving_stop"
-    t.text "routes_serving_stop"
-    t.text "tags"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "provider"
+    t.string "uid"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

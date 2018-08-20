@@ -9,11 +9,12 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
   username: postgres
-  host: db
+  # host: db
 
 development:
   <<: *default
   database: norta_tl_development
+  port: 5433
   # password: ENV['local_db_pw']
 
 # Warning: The database defined as "test" will be erased and
