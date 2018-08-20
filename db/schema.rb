@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2018_08_20_143742) do
+=======
+ActiveRecord::Schema.define(version: 2018_08_14_164223) do
+>>>>>>> 9469fdea0c1e5f206f67bb1c2d559f2daee8ec3e
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
   create_table "email_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -27,6 +32,8 @@ ActiveRecord::Schema.define(version: 2018_08_20_143742) do
     t.index ["reset_password_token"], name: "index_email_users_on_reset_password_token", unique: true
   end
 
+=======
+>>>>>>> 9469fdea0c1e5f206f67bb1c2d559f2daee8ec3e
   create_table "routes", force: :cascade do |t|
     t.string "short_name"
     t.string "long_name"
@@ -66,6 +73,7 @@ ActiveRecord::Schema.define(version: 2018_08_20_143742) do
     t.string "trip_headsign"
     t.string "trip_id"
     t.string "wheelchair_accessible"
+<<<<<<< HEAD
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "bikes_allowed"
@@ -96,6 +104,14 @@ ActiveRecord::Schema.define(version: 2018_08_20_143742) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+=======
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "bikes_allowed"
+    t.text "points"
+    t.text "days"
+    t.text "times"
+>>>>>>> 9469fdea0c1e5f206f67bb1c2d559f2daee8ec3e
   end
 
 end

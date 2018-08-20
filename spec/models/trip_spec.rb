@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-describe GetRouteScheduleJob, type: :job do
+RSpec.describe Trip, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end
