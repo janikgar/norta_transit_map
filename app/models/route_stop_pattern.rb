@@ -1,2 +1,0 @@
-class RouteStopPattern < ApplicationRecord
-end

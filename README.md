@@ -4,7 +4,7 @@ This app is designed to help show you information about New Orleans Regional Tra
 
 ## Build Requirements
 - Docker Alpine & postgres images
-- Ruby ~> 2.3.3
+- Ruby ~> 2.5.1
 - Rails ~> 5.2.0
 - PostgreSQL ~> 10.4
 ### Gems Used
@@ -35,12 +35,5 @@ Tests have been constructed using RSpec/Capybara/Chromedriver. These can be run 
 I have also begun using SemaphoreCI for continuous integration, but this will show failed tests until I have replaced or removed all pending tests.
 
 ## Deployment
-To run in Docker, make sure that the `docker-compose.yml` and `Dockerfile` both exist in the root directory. You will need Docker Store credentials to pull the images. The following commands should get you up and going:
-```
-$ docker-compose build
-... image will build here, including bundle install ...
-$ docker-compose run web rake db:setup
-... databases will be created ...
-$ docker-compose up
-```
-If Docker is set up correctly, you will find the server at 10.0.75.1.
+### Local
+To run locally, run `bundle install` in the main directory, and then `rails server`. This will show your app at `localhost:3000`.
