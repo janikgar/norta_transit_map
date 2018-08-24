@@ -7,7 +7,9 @@
   </div>
 </div>
 
-<div class="col-xs-6">
+<%= current_user %>
+
+<!--<div class="col-xs-6">
   <% if !user_signed_in? %>
     <%= link_to "Create an Account", new_user_registration_path, id: "create_user", method: :get, class: "btn btn-success btn-block btn-sm" %>
     <%= link_to "Sign In with Email", new_user_session_path, id: "sign_in", method: :get, class: "btn btn-primary btn-block btn-sm" %>
@@ -16,10 +18,10 @@
     <%= link_to "Edit User Settings", edit_user_registration_path, id: "edit_user", method: :get, class: "btn btn-danger btn-block btn-sm" %>
     <%= link_to "Sign Out", destroy_user_session_path, id: "sign_out", method: :delete, class: "btn btn-danger btn-block btn-sm" %>
   <% end %>
-</div>
+</div>-->
 
-<div class="col-xs-6">
-  <%= link_to "View Stops Near Me", "#", class: "btn btn-default btn-block btn-sm" %>
-  <%= link_to "View System Map", system_map_path, class: "btn btn-default btn-block btn-sm" %>
-  <%= link_to "Select A Route", "#", class: "btn btn-default btn-block btn-sm" %>
+<div class="col-xs-8 col-xs-offset-2">
+  <%= link_to "View Stops Near Me", "#", class: "btn btn-default btn-block" %>
+  <%= link_to "View System Map", system_map_path, class: "btn btn-default btn-block" %>
+  <%= link_to "Select A Route", select_route_path, class: "btn btn-default btn-block" %>
 </div>

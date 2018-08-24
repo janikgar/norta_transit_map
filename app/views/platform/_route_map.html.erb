@@ -1,63 +1,35 @@
 <script type="text/javascript">
-    $(document).on("turbolinks:load", function() {
+    $(document).ready(function() { ready() });
+    $(document).on("turbolinks:load", function() { ready() });
+    function routeInfoPopup(feature, layer) {
+        layer.bindPopup(
+            "<strong>" + feature.properties.name + ": " + feature.properties.tags.route_long_name + "</strong><br />\n" +
+            "<a href=\"route_map?route=" + feature.properties.name + "\">Route info</a>"
+        )
+    }
+    function ready() {
+        busIcon = L.icon({
+            iconUrl: "<%=image_path "glyphicons-32-bus.png"%>",
+            iconSize: [8,7],
+            className: 'stop-icon'
+        });
+        if (map != undefined) {
+            map.remove()
+        }
+        var baseLayer = L.tileLayer.provider('Stamen.Toner');
         var map = L.map('mapid', {
             center: [29.961187, -90.066967],
-            zoom: 11
+            zoom: 11,
+            layers: [baseLayer]
         });
-        map.locate({setView: true, maxZoom: 16});
+        //map.locate({setView: true, maxZoom: 16});
         
-        L.tileLayer.provider('Stamen.Toner').addTo(map);
-
-        <% route = Route.find(route) %>
-        var coordPath = <%= j route.get_shapes.to_s %>
-        var pathColor = "<%= j route.route_color %>"
-        var newCoordPath = [];
-        <% route.get_shapes.each do |sub_route| %>
-            thisRoute = <%= sub_route %>;
-            newInnerPath = []
-            for (var j = 0; j < coordPath[0].length; j++) {
-                var lon = coordPath[0][j][0]
-                var lat = coordPath[0][j][1]
-                newInnerPath.push([lat, lon]);
-            }
-            newCoordPath.push(newInnerPath);
+        <% @trips.each do |trip| %>
+          L.polyline(<%=trip.points.to_s.html_safe%>, {color: '#<%=@route.color%>'}).addTo(map);
         <% end %>
-        var polyLine = L.polyline(newCoordPath, {color: '#'+pathColor}).addTo(map);
-        polyLine.bindPopup("<div style=\"padding: 5px; background-color: #<%=j route.route_color%> \
-            ; color: #<%= j route.route_text_color%> \
-            \"><strong>Route: \
-            <%= j "#{route.route_short_name}: #{route.route_long_name}" %> \
-            </strong><br /><p> \
-            <%= j link_to "Info and Schedule", route_path(route: route),  style: "color: ##{route.route_text_color}"%> \
-            </div>");
-        map.fitBounds(polyLine.getBounds());
 
-        //var marker = L.marker([29.961187, -90.066967]).addTo(map);
-
-        /*var circle = L.circle([29.961187, -90.066967], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 500
-        }).addTo(map);*/
-
-        /*var polygon = L.polygon([
-            [29.95, -90],
-            [29.94, -90.1],
-            [29.93, -90]
-        ]).addTo(map);*/
-
-        //marker.bindPopup("<strong>Hello world!</strong><br/><p>This is New Orleans</p>")
-
-        //var popup = L.popup();
-
-        /*function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("You clicked the map at " + e.latlng.toString())
-                .openOn(map);
-        }*/
-
-        //map.on('click', onMapClick);
-    });
+        var baseMap = { "Base" : baseLayer }
+        //L.control.layers(baseMap).addTo(map);
+        //map.fitBounds(bounds.getBounds());
+    };
 </script>

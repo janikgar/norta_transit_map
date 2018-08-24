@@ -29,7 +29,7 @@
                 \"><strong>Route: \
                 <%= j "#{route.route_short_name}: #{route.route_long_name}" %> \
                 </strong><br /><p> \
-                <%= j link_to "Info and Schedule", route_path(route: route),  style: "color: ##{route.route_text_color}"%> \
+                <%= j link_to "Info and Schedule", route_map_path(route: route),  style: "color: ##{route.route_text_color}"%> \
                 </div>");
             map.fitBounds(polyLine.getBounds());
         <% end %>

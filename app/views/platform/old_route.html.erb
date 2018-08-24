@@ -1,0 +1,48 @@
+
+<div class="col-xs-12 col-md-6">
+  <div id="mapid"></div>
+</div>
+<div class="col-xs-12 col-md-5">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="schedule-box">
+      <% @directions.keys.each_with_index do |key1, index| %>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="heading-<%=index%>">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>">
+              <%=key1%>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse-<%=index%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%=index%>">
+            <div class="panel-body">
+              <table class="table table-striped">
+                <% @directions[key1].each do |hash| %>
+                  <tr>
+                    <td><strong><%=hash[0]%></strong></td>
+                    <% hash[1].sort.each do |time| %>
+                      <% split_time = time.split(':') %>
+                      <% if split_time[0] == "24" %>
+                        <% now_date = DateTime.now %>
+                        <% this_time = DateTime.new(now_date.year, now_date.month, now_date.day + 1, split_time[0].to_i-24, split_time[1].to_i, split_time[2].to_i) %>
+                        <td><%=this_time.strftime("%l:%M %p\n(%m/%d)")%></td>
+                      <% else %>
+                        <% this_time = Time.parse(time) %>
+                        <td><%=this_time.strftime("%l:%M %p")%></td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render "map", {routes: @routes, bounds: @bounds, stops: @display_stops} %>
+<script type="text/javascript">
+    $('.navbar-brand').append(" - <%="#{JSON.parse(@routes)['properties']['name']}: #{JSON.parse(@routes)['properties']['tags']['route_long_name']}"%>")
+</script>
