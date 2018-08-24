@@ -1,13 +1,14 @@
 module ApplicationHelper
 
-    # def get_all_models
-    #     get_calendars
-    #     get_routes
-    #     get_stops
-    #     get_shapes
-    #     get_trips
-    #     get_stop_times
-    # end
+    def load_all_models
+        load_stops
+        load_calendars
+        load_routes
+        load_shapes
+        create_aggr_shapes
+        load_trips
+        load_stop_times
+    end
   def get_source(local=true)
     if local
       source = GTFS::Source.build('public/temp.zip')
@@ -83,6 +84,15 @@ module ApplicationHelper
       this_shape = shape.instance_values
       this_shape.delete('feed')
       Shape.create(this_shape)
+    end
+  end
+
+  def create_aggr_shapes
+    if Shape.count > 0
+      shape_ids = Shape.pluck(:shape_id).uniq
+      shape_ids.each do |shape_id|
+        AggrShape.create(aggr_shape_id: shape_id)
+      end
     end
   end
 
