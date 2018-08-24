@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 2018_08_20_180755) do
 
   create_table "aggr_shapes", force: :cascade do |t|
     t.string "aggr_shape_id"
-    t.text "shape_ids"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["aggr_shape_id"], name: "index_aggr_shapes_on_aggr_shape_id", unique: true
@@ -134,9 +133,4 @@ ActiveRecord::Schema.define(version: 2018_08_20_180755) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "stop_times", "stops", primary_key: "stop_id"
-  add_foreign_key "stop_times", "trips", primary_key: "trip_id"
-  add_foreign_key "trips", "aggr_shapes", column: "shape_id", primary_key: "aggr_shape_id"
-  add_foreign_key "trips", "calendars", column: "service_id", primary_key: "service_id"
-  add_foreign_key "trips", "routes", primary_key: "route_id"
 end

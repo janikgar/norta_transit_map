@@ -1,3 +1,3 @@
 class AggrShape < ApplicationRecord
-  serialize :shape_ids, Array
+  # serialize :shape_ids, Array
 end

@@ -8,6 +8,14 @@ class TripController < ApplicationController
     @trip = Trip.create(these_params)
   end
 
+  def route
+    Route.find_by(route_id: self.route_id)
+  end
+
+  def calendar
+    Calendar.find_by(service_id: self.service_id)
+  end
+
   protected
   def trip_params
     params.require(:trips).permit(:trip_id, :trip_headsign, :trip_short_name, :direction_id, :block_id, :wheelchair_accessible, :bikes_allowed)

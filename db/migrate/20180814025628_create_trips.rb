@@ -15,8 +15,8 @@ class CreateTrips < ActiveRecord::Migration[5.2]
     end
     add_index :trips, :trip_id, unique: true
 
-    add_foreign_key :trips, :routes, column: :route_id, primary_key: :route_id
-    add_foreign_key :trips, :calendars, column: :service_id, primary_key: :service_id
-    add_foreign_key :trips, :aggr_shapes, column: :shape_id, primary_key: :aggr_shape_id
+    # add_foreign_key :trips, :routes, column: :route_id, primary_key: :route_id
+    # add_foreign_key :trips, :calendars, column: :service_id, primary_key: :service_id
+    # add_foreign_key :trips, :aggr_shapes, column: :shape_id, primary_key: :aggr_shape_id
   end
 end

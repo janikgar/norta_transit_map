@@ -1,8 +1,12 @@
 class AggrShapesController < ApplicationController
   def create
     this_shape_id = aggr_shapes_params[:aggr_shape_id]
-    shape_ids = Shape.where(shape_id: this_shape_id)
-    @aggr_shapes = AggrShape.create(this_shape_id, shape_ids)
+    # shape_ids = Shape.where(shape_id: this_shape_id)
+    @aggr_shapes = AggrShape.create(this_shape_id)
+  end
+
+  def shapes
+    Shape.where(shape_id: self.aggr_shape_id)
   end
 
   protected

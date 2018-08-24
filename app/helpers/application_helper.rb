@@ -1,14 +1,14 @@
 module ApplicationHelper
 
-    def load_all_models
-        load_stops
-        load_calendars
-        load_routes
-        load_shapes
-        create_aggr_shapes
-        load_trips
-        load_stop_times
-    end
+  def load_all_models
+      load_stops
+      load_calendars
+      load_routes
+      load_shapes
+      create_aggr_shapes
+      load_trips
+      load_stop_times
+  end
   def get_source(local=true)
     if local
       source = GTFS::Source.build('public/temp.zip')

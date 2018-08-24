@@ -12,6 +12,14 @@ class StopTimeController < ApplicationController
     @stop_time = StopTime.create(these_params)
   end
 
+  def trip
+    Trip.find_by(trip_id: self.trip_id)
+  end
+
+  def stop
+    Stop.find_by(stop_id: self.stop_id)
+  end
+
   protected
   def stop_time_params
     params.require(:stop_times).permit(:arrival_time, :departure_time, :stop_sequence, :stop_headsign, :pickup_type, :drop_off_type, :shape_dist_traveled, :timepoint, :trip_id, :stop_id)
